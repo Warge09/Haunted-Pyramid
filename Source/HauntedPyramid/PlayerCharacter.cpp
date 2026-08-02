@@ -9,6 +9,12 @@ APlayerCharacter::APlayerCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	PlayerFearComponent = CreateDefaultSubobject<UPlayerFearComponent>(TEXT("PlayerFearComponent"));
+
+	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+
 }
 
 // Called when the game starts or when spawned
@@ -29,7 +35,40 @@ void APlayerCharacter::BeginPlay()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("PlayerController is not valid."));
 	}
-	
+
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::OnOverlapBegin);
+	GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this, &APlayerCharacter::OnOverlapEnd);
+
+
+	if(!PlayerFearComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("PlayerFearComponent is not valid."));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("PlayerFearComponent is valid."));
+	}
+
+}
+
+void APlayerCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if(APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Overlap Begin with %s"), *OtherActor->GetName());
+		PlayerFearComponent->FearLevel += 50.0f;
+	}
+
+}
+
+void APlayerCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if(APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor)) 
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Overlap End with %s"), *OtherActor->GetName());
+		PlayerFearComponent->FearLevel -= 50.0f;
+	}
+
 }
 
 void APlayerCharacter::Move(const FInputActionValue& Value)
@@ -59,6 +98,51 @@ void APlayerCharacter::Look(const FInputActionValue& Value)
 	}
 }
 
+void APlayerCharacter::Sprint(const FInputActionValue& Value)
+{
+	if (bIsCrouched == true) return;
+
+	if(PlayerFearComponent->FearLevel >= 50 && StaminaAmount > 0)
+	{
+		GetWorld()->GetTimerManager().SetTimer(SprintTimerHandle, [this]()
+		{
+				StaminaAmount -= StaminaDrainRate; // Decrease stamina over time
+				StaminaAmount = FMath::Clamp(StaminaAmount, 0.f, 100.f); 
+				GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+
+				UE_LOG(LogTemp, Warning, TEXT("Sprinting! Stamina: %f"), StaminaAmount);
+
+			if (StaminaAmount <= 0)
+			{
+				StopSprinting();
+				UE_LOG(LogTemp, Warning, TEXT("Stamina depleted! Stopping sprint."));
+			}
+
+		}, 0.15f, true);
+	}
+
+}
+
+void APlayerCharacter::StopSprinting()
+{
+	GetWorld()->GetTimerManager().ClearTimer(SprintTimerHandle);
+	GetCharacterMovement()->MaxWalkSpeed = 600.f; // Reset to normal speed
+
+	GetWorld()->GetTimerManager().SetTimer(SprintTimerHandle, [this]()
+		{
+			if (PlayerFearComponent->FearLevel == 0)
+			{
+				StaminaAmount += StaminaRecoveryRate;
+				StaminaAmount = FMath::Clamp(StaminaAmount, 0.f, 100.f);
+
+				if (StaminaAmount >= 100)
+				{
+					UE_LOG(LogTemp, Warning, TEXT("Stamina fully recovered!"));
+				}
+			}
+		}, 0.25f, true);
+}
+
 void APlayerCharacter::Jump()
 {
 	ACharacter::Jump();
@@ -84,6 +168,9 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Move);
+
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Started, this, &APlayerCharacter::Sprint);
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &APlayerCharacter::StopSprinting);
 
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Look);
 

@@ -26,13 +26,20 @@ protected:
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "AI")
-	UBehaviorTree* BehaviorTree;
+	TObjectPtr<UBehaviorTree> BehaviorTree;
+
+/*	UPROPERTY(VisibleAnywhere, Category = "AI")
+	TObjectPtr<UAIPerceptionComponent> EnemyPerceptionComponent; */
+
+	UPROPERTY(VisibleAnywhere, Category = "AI")
+	TObjectPtr<UBlackboardComponent> BlackboardComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category = "AI")
-	UAISenseConfig_Sight* SightConfig;
+	TObjectPtr<UAISenseConfig_Sight> SightConfig;
 
 	UPROPERTY(EditDefaultsOnly, Category = "AI")
-	UAISenseConfig_Hearing* HearingConfig;
+	TObjectPtr<UAISenseConfig_Hearing> HearingConfig;
+
 
 	void OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
 	void OnTargetDetected(AActor* Actor, FAIStimulus Stimulus);

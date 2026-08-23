@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "AI/EnemyAIController.h"
 #include <Components/BoxComponent.h>
 #include "EnemyCharacter.generated.h"
 
@@ -15,6 +16,9 @@ class HAUNTEDPYRAMID_API AEnemyCharacter : public ACharacter
 public:
 	// Sets default values for this character's properties
 	AEnemyCharacter();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI Component")
+	TObjectPtr<AEnemyAIController> EnemyAIController;
 
 protected:
 	// Called when the game starts or when spawned

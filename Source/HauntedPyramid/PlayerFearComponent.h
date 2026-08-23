@@ -28,5 +28,13 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	UFUNCTION(BlueprintCallable, Category = "Fear")
+	void CurrentFearLevel(float& OutFearLevel) const;
+
+	UFUNCTION(BlueprintCallable, Category = "Fear")
+	void IncreaseFear(float Amount);
+
+	UFUNCTION(BlueprintCallable, Category = "Fear")
+	void DecreaseFear(float Amount);
 		
 };

@@ -53,6 +53,8 @@ void APlayerCharacter::BeginPlay()
 
 void APlayerCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Overlap Begin with %s outside of if statement"), *OtherActor->GetName());
+
 	if(APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Overlap Begin with %s"), *OtherActor->GetName());
@@ -63,6 +65,8 @@ void APlayerCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActo
 
 void APlayerCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
+	UE_LOG(LogTemp, Warning, TEXT("Overlap End with %s outside of if statement"), *OtherActor->GetName());
+
 	if(APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor)) 
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Overlap End with %s"), *OtherActor->GetName());
@@ -101,6 +105,7 @@ void APlayerCharacter::Look(const FInputActionValue& Value)
 void APlayerCharacter::Sprint(const FInputActionValue& Value)
 {
 	if (bIsCrouched == true) return;
+	if (!PlayerFearComponent) return;
 
 	if(PlayerFearComponent->FearLevel >= 50 && StaminaAmount > 0)
 	{
@@ -130,16 +135,21 @@ void APlayerCharacter::StopSprinting()
 
 	GetWorld()->GetTimerManager().SetTimer(SprintTimerHandle, [this]()
 		{
-			if (PlayerFearComponent->FearLevel == 0)
+			if (PlayerFearComponent)
 			{
-				StaminaAmount += StaminaRecoveryRate;
-				StaminaAmount = FMath::Clamp(StaminaAmount, 0.f, 100.f);
 
-				if (StaminaAmount >= 100)
+				if (PlayerFearComponent->FearLevel == 0)
 				{
-					UE_LOG(LogTemp, Warning, TEXT("Stamina fully recovered!"));
+					StaminaAmount += StaminaRecoveryRate;
+					StaminaAmount = FMath::Clamp(StaminaAmount, 0.f, 100.f);
+
+					if (StaminaAmount >= 100)
+					{
+						UE_LOG(LogTemp, Warning, TEXT("Stamina fully recovered!"));
+					}
 				}
 			}
+
 		}, 0.25f, true);
 }
 

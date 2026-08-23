@@ -7,7 +7,7 @@ different rooms
 uneven sand
 claustrophobic
 get find items and can inspect them kinda like resident evil and silent hill
-maybe local multiplayer with voice chat that echos around the map
+maybe local multiplayer with voice chat that echos around the map (be somewhat cool to do)
 
 little bits like scorpions or spiders (i hate myself for this) 
 
@@ -16,8 +16,11 @@ part of the pyramid which collapsed into an underground cave or smth?
 false doors like in giza but it has a chance to trigger a fake jumpscare?
 
 you're an archaeologist who is there to recover/remove a tomb
-You have to navigate around the pyramid and the surroundings to get to the site of the tomb but something does not want you there... (lot of games already do this)
+You have to navigate around the pyramid and the surroundings to get to the site of the tomb but something does not want you there... (lot of games already do this though)
 
+The actual thing that is chasing you is just a hallucination due to the heat inside the pyramid which is a real thing in pyramids that happens
+
+footstep system for increased realism, ambience and fear
 
 Equipment:
 Trowel

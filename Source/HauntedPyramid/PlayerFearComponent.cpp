@@ -32,3 +32,20 @@ void UPlayerFearComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	// ...
 }
 
+void UPlayerFearComponent::CurrentFearLevel(float& OutFearLevel) const
+{
+	OutFearLevel = FearLevel;
+}
+
+void UPlayerFearComponent::IncreaseFear(float Amount)
+{
+	FearLevel += Amount;
+
+
+}
+
+void UPlayerFearComponent::DecreaseFear(float Amount)
+{
+	FearLevel -= Amount;
+}
+

@@ -28,7 +28,6 @@ public class HauntedPyramid : ModuleRules
 			"HauntedPyramid/Enemy",
 			"HauntedPyramid/Enemy/AI",
 
-			"HauntedPyramid/Player",
         });
 	}
 }

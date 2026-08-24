@@ -11,7 +11,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/CapsuleComponent.h"
 
-#include "PlayerFearComponent.h"
+#include "Public/Player/PlayerFearComponent.h"
 
 #include "PlayerCharacter.generated.h"
 
@@ -54,7 +54,7 @@ protected:
 	float StaminaDrainRate = 5.f; // Stamina drain rate per second
 	float StaminaRecoveryRate = 10.f; // Stamina recovery rate per second
 
-	float FearLevel = 50.0f;
+	// float FearLevel = 50.0f;
 	bool bIsSprinting = false; 
 
 	FTimerHandle SprintTimerHandle;

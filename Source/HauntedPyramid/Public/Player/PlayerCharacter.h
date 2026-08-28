@@ -12,11 +12,13 @@
 #include "Components/CapsuleComponent.h"
 
 #include "Public/Player/PlayerFearComponent.h"
+#include "Public/Equipment/Flashlight.h"
 
 #include "PlayerCharacter.generated.h"
 
 
 class UPlayerFearComponent;
+class AFlashlight;
 
 UCLASS()
 class HAUNTEDPYRAMID_API APlayerCharacter : public ACharacter
@@ -46,8 +48,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TObjectPtr<UInputAction> JumpAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TObjectPtr<UInputAction> FlashlightToggleAction;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Fear")
 	TObjectPtr<UPlayerFearComponent> PlayerFearComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Flashlight")
+	TSoftObjectPtr<AFlashlight> FlashlightComponent;
 
 	float SprintSpeed = 1200.f; // Sprinting speed
 	float StaminaAmount = 100.f;
@@ -56,6 +64,8 @@ protected:
 
 	// float FearLevel = 50.0f;
 	bool bIsSprinting = false; 
+
+	bool bHasBeenPressed = false;
 
 	FTimerHandle SprintTimerHandle;
 
@@ -75,6 +85,8 @@ public:
 	void StopSprinting();
 	void Jump();
 	void StopJumping();
+
+	void CallFlashlightMethod();
 
 public:	
 	// Called every frame

@@ -2,6 +2,7 @@
 
 
 #include "Equipment/Flashlight.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AFlashlight::AFlashlight()
@@ -10,6 +11,7 @@ AFlashlight::AFlashlight()
 	PrimaryActorTick.bCanEverTick = true;
 		
 	FlashlightMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("FlashlightMesh"));
+	FlashlightMesh->SetupAttachment(RootComponent);
 
 	SpotLightComponent = CreateDefaultSubobject<USpotLightComponent>(TEXT("SpotLightComponent"));
 	SpotLightComponent->SetupAttachment(FlashlightMesh);
@@ -17,8 +19,60 @@ AFlashlight::AFlashlight()
 
 	SpotLightComponent->SetVisibility(false);
 
-		FlashlightBeam = CreateDefaultSubobject<UParticleSystem>(TEXT("FlashlightBeam"));
+		// FlashlightBeam = CreateDefaultSubobject<UParticleSystem>(TEXT("FlashlightBeam"));
 
+}
+
+void AFlashlight::ToggleFlashlight()
+{
+	bIsOn = true;
+	SpotLightComponent->SetVisibility(bIsOn);	
+
+	RandomFlicker();
+
+	if (FlashlightSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, FlashlightSound, GetActorLocation());
+	}
+
+
+}
+
+void AFlashlight::ToggleFlashlightOff()
+{
+	bIsOn = false;
+	SpotLightComponent->SetVisibility(bIsOn);
+
+	if (FlashlightSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, FlashlightSound, GetActorLocation());
+	}
+}
+
+void AFlashlight::RandomFlicker()
+{
+
+	/* while (bIsOn && !bIsFlickering)
+	{
+		bIsFlickering = true;
+
+		if (FMath::FRand() < FlickerChance)
+		{
+			SpotLightComponent->SetVisibility(false);
+			FTimerHandle FlickerTimerHandle;
+			GetWorld()->GetTimerManager().SetTimer(FlickerTimerHandle, [this]()
+				{
+					SpotLightComponent->SetVisibility(true);
+				}, FlickerDuration, false);
+
+			UE_LOG(LogTemp, Warning, TEXT("Flashlight flickered off for %f seconds."), FlickerDuration);
+		}
+		else
+		{
+			SpotLightComponent->SetVisibility(true);
+		}
+		bIsFlickering = false;
+	}*/
 }
 
 // Called when the game starts or when spawned
@@ -34,4 +88,5 @@ void AFlashlight::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
+
 

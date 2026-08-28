@@ -10,6 +10,7 @@ APlayerCharacter::APlayerCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	PlayerFearComponent = CreateDefaultSubobject<UPlayerFearComponent>(TEXT("PlayerFearComponent"));
+	FlashlightComponent = CreateDefaultSubobject<AFlashlight>(TEXT("FlashlightComponent"));
 
 	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
@@ -40,14 +41,6 @@ void APlayerCharacter::BeginPlay()
 	GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this, &APlayerCharacter::OnOverlapEnd);
 
 
-	if(!PlayerFearComponent)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("PlayerFearComponent is not valid."));
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("PlayerFearComponent is valid."));
-	}
 
 }
 
@@ -163,6 +156,22 @@ void APlayerCharacter::StopJumping()
 	ACharacter::StopJumping();
 }
 
+void APlayerCharacter::CallFlashlightMethod()
+{
+
+	if (FlashlightComponent)
+	{
+		if (!FlashlightComponent->bIsOn)
+		{
+			FlashlightComponent->ToggleFlashlight();
+		}
+		else
+		{
+			FlashlightComponent->ToggleFlashlightOff();
+		}
+	}
+}
+
 // Called every frame
 void APlayerCharacter::Tick(float DeltaTime)
 {
@@ -186,5 +195,13 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &APlayerCharacter::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &APlayerCharacter::StopJumping);
+
+		// Flashlight Inputs
+		EnhancedInputComponent->BindAction(FlashlightToggleAction, ETriggerEvent::Triggered, this, &APlayerCharacter::CallFlashlightMethod);
+		
+		//if (FlashlightComponent->bIsOn) 
+		//{
+		//	EnhancedInputComponent->BindAction(FlashlightToggleAction, ETriggerEvent::Triggered, FlashlightComponent, FName(TEXT("ToggleFlashLightOff")));
+		//}
 	}
 }

@@ -51,10 +51,11 @@ void AFlashlight::ToggleFlashlightOff()
 
 void AFlashlight::RandomFlicker()
 {
-
+	/*
 	if (!bIsFlickering && bIsOn)
 	{
 		FTimerHandle FlickerCheck;
+		
 		GetWorld()->GetTimerManager().SetTimer(FlickerCheck, [this]()
 		{
 			if (FMath::FRand() < FlickerChance)
@@ -70,13 +71,10 @@ void AFlashlight::RandomFlicker()
 
 				UE_LOG(LogTemp, Warning, TEXT("Flashlight flickered off for %f seconds."), FlickerDuration);
 			}
-			else
-			{
-				SpotLightComponent->SetVisibility(true);
-			}
 			bIsFlickering = false;
 		}, 2.0f, true);
 	}
+	*/
 }
 
 // Called when the game starts or when spawned

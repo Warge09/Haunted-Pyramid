@@ -43,6 +43,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Flashlight Values")
 	float FlickerDuration = 5.0f; // The flicker will last for x amount of seconds 
 
+
 	UFUNCTION(BlueprintCallable, Category = "Flashlight")
 	void ToggleFlashlight();
 

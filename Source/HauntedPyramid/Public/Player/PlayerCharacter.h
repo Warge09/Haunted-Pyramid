@@ -51,11 +51,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TObjectPtr<UInputAction> FlashlightToggleAction;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Fear")
+	UPROPERTY(BlueprintReadOnly, Category = "Fear")
 	TObjectPtr<UPlayerFearComponent> PlayerFearComponent;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Flashlight")
-	TSoftObjectPtr<AFlashlight> FlashlightComponent;
+	UPROPERTY(BlueprintReadOnly, Category = "Flashlight")
+	TObjectPtr<AFlashlight> FlashlightComponent;
 
 	float SprintSpeed = 1200.f; // Sprinting speed
 	float StaminaAmount = 100.f;
@@ -86,6 +86,10 @@ public:
 	void Jump();
 	void StopJumping();
 
+	UFUNCTION(BlueprintCallable, Category = "Flashlight")
+	void InitializeFlashlight(AFlashlight* SpawnedFlashlight);
+
+	UFUNCTION(BlueprintCallable, Category = "Flashlight")
 	void CallFlashlightMethod();
 
 public:	

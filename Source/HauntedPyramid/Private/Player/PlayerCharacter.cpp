@@ -10,7 +10,6 @@ APlayerCharacter::APlayerCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	PlayerFearComponent = CreateDefaultSubobject<UPlayerFearComponent>(TEXT("PlayerFearComponent"));
-	FlashlightComponent = CreateDefaultSubobject<AFlashlight>(TEXT("FlashlightComponent"));
 
 	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
@@ -39,8 +38,6 @@ void APlayerCharacter::BeginPlay()
 
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::OnOverlapBegin);
 	GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this, &APlayerCharacter::OnOverlapEnd);
-
-
 
 }
 
@@ -156,10 +153,23 @@ void APlayerCharacter::StopJumping()
 	ACharacter::StopJumping();
 }
 
+void APlayerCharacter::InitializeFlashlight(AFlashlight* SpawnedFlashlight)
+{
+	if (IsValid(SpawnedFlashlight))
+	{
+		FlashlightComponent = SpawnedFlashlight;
+		UE_LOG(LogTemp, Warning, TEXT("Flashlight initialized."));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Flashlight is not valid."));
+	}
+}
+
 void APlayerCharacter::CallFlashlightMethod()
 {
 
-	if (FlashlightComponent)
+	if (IsValid(FlashlightComponent))
 	{
 		if (!FlashlightComponent->bIsOn)
 		{
@@ -169,6 +179,10 @@ void APlayerCharacter::CallFlashlightMethod()
 		{
 			FlashlightComponent->ToggleFlashlightOff();
 		}
+	}
+	else 
+	{
+		UE_LOG(LogTemp, Warning, TEXT("FlashlightComponent is not valid within CallFlashlight Function."));
 	}
 }
 

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Debug/DebugLogManager.h"
 #include "EquipmentList.generated.h"
 
 
@@ -15,6 +16,21 @@ class HAUNTEDPYRAMID_API UEquipmentList : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UEquipmentList();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
+	TArray<TSubclassOf<AActor>> EquipmentItems;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
+	TArray<AActor*> EquippedItems;
+
+	UFUNCTION(BlueprintCallable, Category = "Equipmenct")
+	void AddEquipmentItem(TSubclassOf<AActor> ItemClass);
+
+	UFUNCTION(BlueprintCallable, Category = "Equipment")
+	void GetEquippedItems(TArray<AActor*> &OutEquippedItems) const;	
+
+	UFUNCTION(BlueprintCallable, Category = "Equipment")
+	void EquipItem(TSubclassOf<AActor> ItemClass);
 
 protected:
 	// Called when the game starts

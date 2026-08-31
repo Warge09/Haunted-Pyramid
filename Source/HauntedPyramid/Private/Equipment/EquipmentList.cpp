@@ -13,6 +13,27 @@ UEquipmentList::UEquipmentList()
 	// ...
 }
 
+void UEquipmentList::AddEquipmentItem(TSubclassOf<AActor> ItemClass)
+{
+	for (TSubclassOf<AActor> Item : EquipmentItems)
+	{
+
+		if (Item == ItemClass)
+		{
+			//UE_LOG(EquipmentWarning, Warning, TEXT("Item %s is already in the equipment list."), *ItemClass->GetName());
+			return;
+		}
+	}
+}
+
+void UEquipmentList::GetEquippedItems(TArray<AActor*>& OutEquippedItems) const
+{
+}
+
+void UEquipmentList::EquipItem(TSubclassOf<AActor> ItemClass)
+{
+}
+
 
 // Called when the game starts
 void UEquipmentList::BeginPlay()

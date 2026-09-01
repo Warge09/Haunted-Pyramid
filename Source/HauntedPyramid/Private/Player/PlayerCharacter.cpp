@@ -45,7 +45,7 @@ void APlayerCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActo
 {
 	UE_LOG(LogTemp, Warning, TEXT("Overlap Begin with %s outside of if statement"), *OtherActor->GetName());
 
-	if(APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor))
+	if(AEnemyCharacter* EnemyCharacter = Cast<AEnemyCharacter>(OtherActor))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Overlap Begin with %s"), *OtherActor->GetName());
 		PlayerFearComponent->FearLevel += 50.0f;
@@ -57,7 +57,7 @@ void APlayerCharacter::OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor*
 {
 	UE_LOG(LogTemp, Warning, TEXT("Overlap End with %s outside of if statement"), *OtherActor->GetName());
 
-	if(APlayerCharacter* PlayerCharacter = Cast<APlayerCharacter>(OtherActor)) 
+	if(AEnemyCharacter* EnemyCharacter = Cast<AEnemyCharacter>(OtherActor)) 
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Overlap End with %s"), *OtherActor->GetName());
 		PlayerFearComponent->FearLevel -= 50.0f;

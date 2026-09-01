@@ -28,10 +28,14 @@ void UEquipmentList::AddEquipmentItem(TSubclassOf<AActor> ItemClass)
 
 void UEquipmentList::GetEquippedItems(TArray<AActor*>& OutEquippedItems) const
 {
+
+
 }
 
 void UEquipmentList::EquipItem(TSubclassOf<AActor> ItemClass)
 {
+
+
 }
 
 

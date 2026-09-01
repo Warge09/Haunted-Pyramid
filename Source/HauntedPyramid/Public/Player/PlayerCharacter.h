@@ -11,12 +11,13 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/CapsuleComponent.h"
 
+#include "Enemy/EnemyCharacter.h"
 #include "Public/Player/PlayerFearComponent.h"
 #include "Public/Equipment/Flashlight.h"
 
 #include "PlayerCharacter.generated.h"
 
-
+class AEnemyCharacter;
 class UPlayerFearComponent;
 class AFlashlight;
 

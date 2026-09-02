@@ -17,7 +17,7 @@ public:
 	UPlayerFearComponent();
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "Fear")
-	float FearLevel = 100.f;
+	float FearLevel = 0.0f;
 
 protected:
 	// Called when the game starts

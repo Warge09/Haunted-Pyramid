@@ -107,7 +107,7 @@ void APlayerCharacter::Sprint(const FInputActionValue& Value)
 
 				UE_LOG(LogTemp, Warning, TEXT("Sprinting! Stamina: %f"), StaminaAmount);
 
-			if (StaminaAmount <= 0)
+			if (StaminaAmount <= 0.f)
 			{
 				StopSprinting();
 				UE_LOG(LogTemp, Warning, TEXT("Stamina depleted! Stopping sprint."));
@@ -133,8 +133,9 @@ void APlayerCharacter::StopSprinting()
 					StaminaAmount += StaminaRecoveryRate;
 					StaminaAmount = FMath::Clamp(StaminaAmount, 0.f, 100.f);
 
-					if (StaminaAmount >= 100)
+					if (StaminaAmount == 100.f)
 					{
+						GetWorld()->GetTimerManager().ClearTimer(SprintTimerHandle);
 						UE_LOG(LogTemp, Warning, TEXT("Stamina fully recovered!"));
 					}
 				}

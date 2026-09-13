@@ -8,7 +8,7 @@ THIS GAME IS STILL IN DEVELOPMENT
 
 ## Gameplay 
 
-Explore the pyramids, collect and inspect the artifacts that you find. Manage your anxiety and fear as a hostile figure, unknown to be real or an hallucination chases you down. Escape the pyramid with your findings before it consumes you forever.
+Explore the pyramids, collect and inspect the artifacts that you find. Manage your anxiety and fear as a hostile figure, unknownst to be real or an hallucination chases you down. Escape the pyramid with your findings before it consumes you forever.
 
 
 ## Features

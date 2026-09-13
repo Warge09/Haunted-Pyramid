@@ -8,10 +8,23 @@ THIS GAME IS STILL IN DEVELOPMENT
 
 ## Gameplay 
 
-
+Explore the pyramids, collect and inspect the artifacts that you find. Manage your anxiety and fear as a hostile figure, unknown to be real or an hallucination chases you down. Escape the pyramid with your findings before it consumes you forever.
 
 
 ## Features
+
+* **Dynamic Fear System**: Fear affects your movement speed, perception, and visually distorts your screen
+  
+* **Inventory System**: Store your artifacts for later or items that are critical to the story.
+  
+* **Equipment Usage**: Use your equipment to uncover items and artifacts which are swept under the sand or hard to find areas.
+  
+* **The Entity**: Unknown if it is real or an hallucination. It will chase, patrol, hide, and attack the player in order to cover up what is inside.
+
+* **Artifact Inspection**: You can inspect the artifacts that you collect to learn some history behind the pyramid and help solve puzzles.
+
+* **Psychological Horror**: Blurred between reality, threats, and hallucinations. Fight for survival from the unknown which is hunting you down.
+
 
 ## Getting Started
 

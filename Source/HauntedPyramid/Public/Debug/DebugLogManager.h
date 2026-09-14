@@ -21,6 +21,9 @@ DECLARE_LOG_CATEGORY_EXTERN(ProgressionError, Error, All);
 // Major Equipment Errors (e.g. Can't use any of the equipment, can't use a flashlight, etc)
 DECLARE_LOG_CATEGORY_EXTERN(EquipmentError, Error, All);
 
+// Major Inventory Errors (e.g. Can't pick up items, can't use items, can't drop items, etc)
+DECLARE_LOG_CATEGORY_EXTERN(InventoryError, Error, All);
+
 
 
 // WARNING CATEGORIES
@@ -40,10 +43,18 @@ DECLARE_LOG_CATEGORY_EXTERN(ProgressionWarning, Warning, All);
 // Major Equipment Warnings (Equipment not working as intended, flashlight not functioning properly, tools not working as intended, etc)
 DECLARE_LOG_CATEGORY_EXTERN(EquipmentWarning, Warning, All);
 
+// Major Inventory Warnings (Inventory not working as intended, items not being picked up, items not being dropped, etc)
+DECLARE_LOG_CATEGORY_EXTERN(InventoryWarning, Warning, All);
+
 
 class HAUNTEDPYRAMID_API DebugLogManager
 {
 public:
 	DebugLogManager();
 	~DebugLogManager();
+
+	void LogError(const FString& Message, const FString& Category);
+	void LogWarning(const FString& Message, const FString& Category);
+	void LogInfo(const FString& Message, const FString& Category);
+	void LogDebug(const FString& Message, const FString& Category);
 };

@@ -214,9 +214,5 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		// Flashlight Inputs
 		EnhancedInputComponent->BindAction(FlashlightToggleAction, ETriggerEvent::Triggered, this, &APlayerCharacter::CallFlashlightMethod);
 		
-		//if (FlashlightComponent->bIsOn) 
-		//{
-		//	EnhancedInputComponent->BindAction(FlashlightToggleAction, ETriggerEvent::Triggered, FlashlightComponent, FName(TEXT("ToggleFlashLightOff")));
-		//}
 	}
 }

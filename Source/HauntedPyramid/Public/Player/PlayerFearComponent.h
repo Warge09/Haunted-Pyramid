@@ -4,7 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Components/WidgetComponent.h"
 #include "PlayerFearComponent.generated.h"
+
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -18,6 +20,12 @@ public:
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "Fear")
 	float FearLevel = 0.0f;
+
+	UPROPERTY()
+	UWidgetComponent* FearWidgetComponent;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UUserWidget> FearWidgetClass;
 
 protected:
 	// Called when the game starts
@@ -36,5 +44,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Fear")
 	void DecreaseFear(float Amount);
+
+	UFUNCTION(BlueprintCallable, Category = "Fear")
+	void SetWidgetFearLevel(float NewFearLevel);
 		
 };

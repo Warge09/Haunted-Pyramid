@@ -21,11 +21,11 @@ public:
 	UPROPERTY(EditInstanceOnly, BlueprintReadOnly, Category = "Fear")
 	float FearLevel = 0.0f;
 
-	UPROPERTY()
-	UWidgetComponent* FearWidgetComponent;
+	//UPROPERTY()
+	//UWidgetComponent* FearWidgetComponent;
 
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<UUserWidget> FearWidgetClass;
+	//UPROPERTY(EditAnywhere)
+	//TSubclassOf<UUserWidget> FearWidgetClass;
 
 protected:
 	// Called when the game starts

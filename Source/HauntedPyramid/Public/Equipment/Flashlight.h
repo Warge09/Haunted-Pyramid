@@ -50,6 +50,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Flashlight")
 	void ToggleFlashlightOff();
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Flashlight")
+	void FlashlightNoise();
+
 	UFUNCTION(BlueprintCallable, Category = "Flashlight")
 	void RandomFlicker();
 

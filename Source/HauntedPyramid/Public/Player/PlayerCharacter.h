@@ -93,6 +93,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Flashlight")
 	void CallFlashlightMethod();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player")
+	float Health = 100.0f;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

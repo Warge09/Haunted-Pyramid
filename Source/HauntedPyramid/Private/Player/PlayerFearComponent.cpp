@@ -12,10 +12,10 @@ UPlayerFearComponent::UPlayerFearComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
-	FearWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("FearWidgetComponent"));
-	FearWidgetComponent->SetupAttachment(this);
-	FearWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
-	FearWidgetComponent->SetDrawSize(FVector2D(200.0f, 50.0f));
+//	FearWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("FearWidgetComponent"));
+//	FearWidgetComponent->SetupAttachment(this);
+//	FearWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
+//	FearWidgetComponent->SetDrawSize(FVector2D(200.0f, 50.0f));
 
 	// ...
 }
@@ -26,11 +26,11 @@ void UPlayerFearComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (FearWidgetClass)
-	{
-		FearWidgetComponent->SetWidgetClass(FearWidgetClass);
-		FearWidgetComponent->InitWidget();
-	}
+	//if (FearWidgetClass)
+	//{
+	//	FearWidgetComponent->SetWidgetClass(FearWidgetClass);
+	//	FearWidgetComponent->InitWidget();
+	//}
 
 }
 

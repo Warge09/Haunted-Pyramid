@@ -33,6 +33,7 @@ void AFlashlight::ToggleFlashlight()
 	if (FlashlightSound)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, FlashlightSound, GetActorLocation());
+		FlashlightNoise();
 	}
 
 
@@ -46,6 +47,7 @@ void AFlashlight::ToggleFlashlightOff()
 	if (FlashlightSound)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, FlashlightSound, GetActorLocation());
+		FlashlightNoise();
 	}
 }
 

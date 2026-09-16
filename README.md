@@ -1,6 +1,6 @@
 # Haunted Pyramid (Not official name yet)
 
-A Psychological horror game where an archeologist explores through the great pyramids of Egypt uncovering artifacts within the deepest depths of the tombs. But something there does not want you to uncover these ancient items-and you can't even trust your mind to differentiate what is real or an illusion.
+A Psychological horror game where an archeologist sent to explore through the great pyramids of Egypt uncovering artifacts within the deepest depths of the tombs. But something there does not want you to uncover these ancient items-and you can't even trust your mind to differentiate what is real or an illusion.
 
 THIS GAME IS STILL IN DEVELOPMENT 
 

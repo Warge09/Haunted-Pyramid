@@ -29,3 +29,10 @@ Sieves
 Shovel
 Camera
 Notebook or a digital recording device?
+
+AI 
+
+Hiding from the player then when it gets too close then attacking/ huge jumpscare 
+
+It reacts to flashlights hiding away if it is flashed upon but 
+it wil not always work so then the enemy cant become useless

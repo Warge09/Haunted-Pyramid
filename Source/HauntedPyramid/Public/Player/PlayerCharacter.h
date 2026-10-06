@@ -14,12 +14,16 @@
 #include "Enemy/EnemyCharacter.h"
 #include "Public/Player/PlayerFearComponent.h"
 #include "Public/Equipment/Flashlight.h"
+#include "Public/Equipment/EquipmentList.h"
 
 #include "PlayerCharacter.generated.h"
 
-class AEnemyCharacter;
+
 class UPlayerFearComponent;
+class UEquipmentList;
 class AFlashlight;
+class AEnemyCharacter;
+
 
 UCLASS()
 class HAUNTEDPYRAMID_API APlayerCharacter : public ACharacter
@@ -52,11 +56,20 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TObjectPtr<UInputAction> FlashlightToggleAction;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Fear")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TObjectPtr<UInputAction> EquipAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Fear")
 	TObjectPtr<UPlayerFearComponent> PlayerFearComponent;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Flashlight")
-	TObjectPtr<AFlashlight> FlashlightComponent;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Flashlight")
+	TSoftObjectPtr<AFlashlight> FlashlightComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) 
+	TSoftObjectPtr<UEquipmentList> EquipmentListComponent;
+
+	/*UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Equipment")
+	TObjectPtr<UEquipmentList> EquipmentListComponent; */
 
 	float SprintSpeed = 1200.f; // Sprinting speed
 	float StaminaAmount = 100.f;
@@ -102,5 +115,7 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	virtual void PossessedBy(AController* NewController) override;
 
 };

@@ -10,11 +10,12 @@ APlayerCharacter::APlayerCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	PlayerFearComponent = CreateDefaultSubobject<UPlayerFearComponent>(TEXT("PlayerFearComponent"));
+	EquipmentListComponent = CreateDefaultSubobject<UEquipmentList>(TEXT("EquipmentListComponent"));
 
 	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
-
+	
 }
 
 // Called when the game starts or when spawned
@@ -22,24 +23,34 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	check(GEngine != nullptr);
-
-	if(APlayerController* PlayerController = Cast<APlayerController>(GetController()))
-	{
-		if(UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
-		{
-			Subsystem->AddMappingContext(InputMappingContext, 0);
-		}
-	}
-	else 	
-	{
-		UE_LOG(LogTemp, Warning, TEXT("PlayerController is not valid."));
-	}
 
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::OnOverlapBegin);
 	GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this, &APlayerCharacter::OnOverlapEnd);
 
 }
+
+
+void APlayerCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	check(GEngine != nullptr);
+	
+	// This has to be done in PossessedBy because the PlayerController is not valid in BeginPlay which makes input 
+	// in other classes null
+	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+	{
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			Subsystem->AddMappingContext(InputMappingContext, 0);
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("PlayerController is not valid."));
+	}
+}
+
 
 void APlayerCharacter::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
@@ -214,5 +225,14 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		// Flashlight Inputs
 		EnhancedInputComponent->BindAction(FlashlightToggleAction, ETriggerEvent::Triggered, this, &APlayerCharacter::CallFlashlightMethod);
 		
+		if (EquipmentListComponent)
+		{
+			EquipmentListComponent->SetupInputBindings(EnhancedInputComponent, EquipAction);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("EquipmentListComponent is not valid within SetupPlayerInputComponent Function."));
+		}
 	}
 }
+

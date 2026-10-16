@@ -20,15 +20,45 @@ void UEquipmentList::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (EquipmentItems.Num() == 0) return;
+
 	// Spawn and attach all equipped items to the player character, but keep them hidden and disabled until equipped.
 	for(EquipmentAmount = 0; EquipmentAmount < EquipmentItems.Num(); EquipmentAmount++)
 	{
-		EquipmentItems[EquipmentAmount]->Se	tActorHiddenInGame(true);
-		EquipmentItems[EquipmentAmount]->SetActorEnableCollision(false);
-		EquipmentItems[EquipmentAmount]->SetActorTickEnabled(false);
-		EquipmentAmount = EquipmentItems.Num();
+		UE_LOG(LogTemp, Warning, TEXT("Equipment Amount: %d"), EquipmentAmount);
+
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = GetOwner();
+
+		// Needed so the actor's can be on top of each other in the player's hand and unhidden when needed one by one.
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+		FVector SpawnLocation = GetOwner()->GetActorLocation();
+		FRotator SpawnRotation = GetOwner()->GetActorRotation();
+
+		AActor* SpawnedItem = GetWorld()->SpawnActor<AActor>(EquipmentItems[EquipmentAmount], SpawnLocation, SpawnRotation, SpawnParams);
+
+		if (SpawnedItem)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Items have been spawned: %s"), *SpawnedItem->GetName());
+			SpawnedItem->AttachToActor(GetOwner(), FAttachmentTransformRules::KeepRelativeTransform);
+
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Failed to spawn equipment item at index %d"), EquipmentAmount);
+		}
+
+		if (EquipmentItems[EquipmentAmount])
+		{
+			SpawnedItem->SetActorHiddenInGame(true);
+			SpawnedItem->SetActorEnableCollision(false);
+			SpawnedItem->SetActorTickEnabled(false);
+			
+		}
 	}
 
+	UE_LOG(LogTemp, Warning, TEXT("BeginPlay called. EquipmentItems.Num(): %d"), EquipmentItems.Num());
 }
 
 void UEquipmentList::SetupInputBindings(UEnhancedInputComponent* EnhancedInputComponent, class UInputAction* InputAction)
@@ -88,18 +118,18 @@ void UEquipmentList::GetEquippedItems(TArray<AActor*>& OutEquippedItems) const
 
 void UEquipmentList::EquipItem(int32 IndexValue)
 {
-	UE_LOG(LogTemp, Warning, TEXT("EquipItem called with index: %d"), Index);
-	
+	UE_LOG(LogTemp, Warning, TEXT("EquipItem called with index: %d"), IndexValue);
+
 	for(AActor* Item : EquipmentItems)
 	{
 		if (Item)
 		{
-			Item->SetActorHiddenInGame(true);
-			Item->SetActorEnableCollision(false);
-			Item->SetActorTickEnabled(false);
+			Item->SetActorHiddenInGame(false);
+			Item->SetActorEnableCollision(true);
+			Item->SetActorTickEnabled(true);
 		}
 
-		UE_LOG(LogTemp, Warning, TEXT("Hiding item: %s"), *GetNameSafe(Item));
+		UE_LOG(LogTemp, Warning, TEXT("Showing item: %s"), *GetNameSafe(Item));
 	}
 
 }

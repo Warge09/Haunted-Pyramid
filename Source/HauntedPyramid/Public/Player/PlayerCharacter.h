@@ -63,10 +63,10 @@ protected:
 	TObjectPtr<UPlayerFearComponent> PlayerFearComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Flashlight")
-	TSoftObjectPtr<AFlashlight> FlashlightComponent;
+	TObjectPtr<AFlashlight> FlashlightComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) 
-	TSoftObjectPtr<UEquipmentList> EquipmentListComponent;
+	TObjectPtr<UEquipmentList> EquipmentListComponent;
 
 	/*UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Equipment")
 	TObjectPtr<UEquipmentList> EquipmentListComponent; */

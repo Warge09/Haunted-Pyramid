@@ -40,8 +40,11 @@ protected:
 
 	void HandleEquipAction(const FInputActionValue& Value);
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
-	TArray<TSoftObjectPtr<AActor>> EquipmentItems;
+	UPROPERTY(EditDefaultsOnly, Category = "Equipment")
+	TArray<TSubclassOf<AActor>> EquipmentToSpawnClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Equipment")
+	TArray<TSubclassOf<AActor>> EquipmentItems;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* EquipAction;

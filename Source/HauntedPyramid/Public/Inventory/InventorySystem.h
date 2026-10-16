@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "InventorySystem.generated.h"
+#include "InventorySystem.generated.h" 
 
 UCLASS()
 class HAUNTEDPYRAMID_API AInventorySystem : public AActor

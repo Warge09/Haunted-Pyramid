@@ -27,12 +27,6 @@ void UCleanableObject::BeginPlay()
 
 }
 
-// Initialize the vertex override buffer to store the cleaned state of each vertex
-void UCleanableObject::InitializeVertexOverrideBuffer()
-{
-
-
-}
 
 void UCleanableObject::BrushAtLocation(FVector HitLocation, float BrushRadius, float CleanSpeed)
 {
@@ -40,10 +34,6 @@ void UCleanableObject::BrushAtLocation(FVector HitLocation, float BrushRadius, f
 
 }
 
-void UCleanableObject::CheckIfObjectIsCleaned()
-{
-
-}
 
 
 // Called every frame

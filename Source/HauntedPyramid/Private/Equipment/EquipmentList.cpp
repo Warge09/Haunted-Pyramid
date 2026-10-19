@@ -30,6 +30,18 @@ void UEquipmentList::BeginPlay()
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.Owner = GetOwner();
 
+		USkeletalMeshComponent* OwnerSkeletalMesh = GetOwner()->FindComponentByClass<USkeletalMeshComponent>();
+		const FName HandSocket = TEXT("ik_hand_gun"); // Probably a better way to do this cause of case sensitivity but oh well
+
+		if (OwnerSkeletalMesh) 
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Owner has a SkeletalMesh"));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("SkeletalMesh not found on Owner"));
+		}
+
 		// Needed so the actor's can be on top of each other in the player's hand and unhidden when needed one by one.
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
@@ -41,8 +53,9 @@ void UEquipmentList::BeginPlay()
 		if (SpawnedItem)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Items have been spawned: %s"), *SpawnedItem->GetName());
-			SpawnedItem->AttachToActor(GetOwner(), FAttachmentTransformRules::KeepRelativeTransform);
+			SpawnedItem->AttachToComponent(OwnerSkeletalMesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, HandSocket);
 
+			UE_LOG(LogTemp, Warning, TEXT("Items spawned at location: X: %f, Y: %f, Z: %f"), SpawnLocation.X, SpawnLocation.Y, SpawnLocation.Z);
 		}
 		else
 		{
@@ -51,9 +64,9 @@ void UEquipmentList::BeginPlay()
 
 		if (EquipmentItems[EquipmentAmount])
 		{
-			SpawnedItem->SetActorHiddenInGame(true);
+			SpawnedItem->SetActorHiddenInGame(false);
 			SpawnedItem->SetActorEnableCollision(false);
-			SpawnedItem->SetActorTickEnabled(false);
+			SpawnedItem->SetActorTickEnabled(true);
 			
 		}
 	}
@@ -120,16 +133,17 @@ void UEquipmentList::EquipItem(int32 IndexValue)
 {
 	UE_LOG(LogTemp, Warning, TEXT("EquipItem called with index: %d"), IndexValue);
 
-	for(AActor* Item : EquipmentItems)
+
+	for(auto& Item : EquipmentItems)
 	{
-		if (Item)
+	/*	if (Item)
 		{
 			Item->SetActorHiddenInGame(false);
 			Item->SetActorEnableCollision(true);
 			Item->SetActorTickEnabled(true);
 		}
 
-		UE_LOG(LogTemp, Warning, TEXT("Showing item: %s"), *GetNameSafe(Item));
+		UE_LOG(LogTemp, Warning, TEXT("Showing item: %s"), *GetNameSafe(Item)); */
 	}
 
 }

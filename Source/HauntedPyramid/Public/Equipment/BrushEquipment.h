@@ -6,11 +6,12 @@
 #include "GameFramework/Actor.h"
 
 #include "Environment/CleanableObject.h"
+#include "EquipmentAnimationInterface.h"
 
 #include "BrushEquipment.generated.h"
 
 UCLASS()
-class HAUNTEDPYRAMID_API ABrushEquipment : public AActor
+class HAUNTEDPYRAMID_API ABrushEquipment : public AActor, public IEquipmentAnimationInterface
 {
 	GENERATED_BODY()
 	
@@ -23,6 +24,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Brush")
 	float BrushSize = 1.0f;
+
 
 protected:
 	// Called when the game starts or when spawned
@@ -44,4 +46,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Brush")
 	bool bIsBrushing = false; // Whether the brush is currently being used
+
+	virtual void PlayEquipmentAnimationImplement();
+	virtual void PlayUnEquipAnimationImplement();
+	virtual void PlayUseAnimationInmplement();
+	virtual void PlayUnUseAnimationImplement();
 };

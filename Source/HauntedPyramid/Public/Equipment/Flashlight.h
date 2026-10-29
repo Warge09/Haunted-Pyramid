@@ -7,6 +7,8 @@
 #include "Components/SpotLightComponent.h"
 #include "Particles/ParticleSystem.h"
 
+#include "EquipmentAnimationInterface.h"
+
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
@@ -14,7 +16,7 @@
 #include "Flashlight.generated.h"
 
 UCLASS()
-class HAUNTEDPYRAMID_API AFlashlight : public AActor
+class HAUNTEDPYRAMID_API AFlashlight : public AActor, public IEquipmentAnimationInterface
 {
 	GENERATED_BODY()
 	
@@ -70,5 +72,10 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	virtual void PlayEquipmentAnimationImplement();
+	virtual void PlayUnEquipAnimationImplement();
+	virtual void PlayUseAnimationInmplement();
+	virtual void PlayUnUseAnimationImplement();
 
 };

@@ -21,26 +21,29 @@ void UEquipmentList::BeginPlay()
 	Super::BeginPlay();
 
 	if (EquipmentItems.Num() == 0) return;
+	EquipmentItems.Empty();
+
+	USkeletalMeshComponent* OwnerSkeletalMesh = GetOwner()->FindComponentByClass<USkeletalMeshComponent>();
+	const FName HandSocket = TEXT("ik_hand_gun"); // Probably a better way to do this cause of case sensitivity but oh well
+
+	if (!OwnerSkeletalMesh)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Owner does not have a SkeletalMesh"));
+		return;
+	}
 
 	// Spawn and attach all equipped items to the player character, but keep them hidden and disabled until equipped.
-	for(EquipmentAmount = 0; EquipmentAmount < EquipmentItems.Num(); EquipmentAmount++)
+	for(int32 i = 0; i < EquipmentClasses.Num(); i++)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Equipment Amount: %d"), EquipmentAmount);
+		TSubclassOf<AActor> ItemClasses = EquipmentClasses[i];
+
+		if(!ItemClasses) 
+		{
+			continue;
+		}
 
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.Owner = GetOwner();
-
-		USkeletalMeshComponent* OwnerSkeletalMesh = GetOwner()->FindComponentByClass<USkeletalMeshComponent>();
-		const FName HandSocket = TEXT("ik_hand_gun"); // Probably a better way to do this cause of case sensitivity but oh well
-
-		if (OwnerSkeletalMesh) 
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Owner has a SkeletalMesh"));
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("SkeletalMesh not found on Owner"));
-		}
 
 		// Needed so the actor's can be on top of each other in the player's hand and unhidden when needed one by one.
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -48,30 +51,26 @@ void UEquipmentList::BeginPlay()
 		FVector SpawnLocation = GetOwner()->GetActorLocation();
 		FRotator SpawnRotation = GetOwner()->GetActorRotation();
 
-		AActor* SpawnedItem = GetWorld()->SpawnActor<AActor>(EquipmentItems[EquipmentAmount], SpawnLocation, SpawnRotation, SpawnParams);
+		AActor* SpawnedItem = GetWorld()->SpawnActor<AActor>(ItemClasses, SpawnLocation, SpawnRotation, SpawnParams);
 
 		if (SpawnedItem)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Items have been spawned: %s"), *SpawnedItem->GetName());
-			SpawnedItem->AttachToComponent(OwnerSkeletalMesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, HandSocket);
-
 			UE_LOG(LogTemp, Warning, TEXT("Items spawned at location: X: %f, Y: %f, Z: %f"), SpawnLocation.X, SpawnLocation.Y, SpawnLocation.Z);
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Failed to spawn equipment item at index %d"), EquipmentAmount);
+			continue;
 		}
 
-		if (EquipmentItems[EquipmentAmount])
-		{
-			SpawnedItem->SetActorHiddenInGame(false);
-			SpawnedItem->SetActorEnableCollision(false);
-			SpawnedItem->SetActorTickEnabled(true);
-			
-		}
+		SpawnedItem->AttachToComponent(OwnerSkeletalMesh, FAttachmentTransformRules::SnapToTargetNotIncludingScale, HandSocket);
+		SpawnedItem->SetActorHiddenInGame(true);
+		SpawnedItem->SetActorEnableCollision(false);
+		SpawnedItem->SetActorTickEnabled(false);
+
+		EquipmentItems.Add(SpawnedItem);
+
 	}
-
-	UE_LOG(LogTemp, Warning, TEXT("BeginPlay called. EquipmentItems.Num(): %d"), EquipmentItems.Num());
 }
 
 void UEquipmentList::SetupInputBindings(UEnhancedInputComponent* EnhancedInputComponent, class UInputAction* InputAction)
@@ -100,12 +99,55 @@ void UEquipmentList::SetupInputBindings(UEnhancedInputComponent* EnhancedInputCo
 void UEquipmentList::HandleEquipAction(const FInputActionValue& Value)
 {
 
-	int32 NewIndex = FMath::RoundToInt(Value.Get<float>()) - 1; // Convert to 0-based index so the engine can recognise that the 1 key has been pressed.
+	const int32 NewIndex = FMath::RoundToInt(Value.Get<float>()) - 1; // Convert to 0-based index so the engine can recognise that the 1 key has been pressed.
 
 	EquipItem(NewIndex);
 
 	UE_LOG(LogTemp, Warning, TEXT("HandleEquipAction called with value: %f"), Value.Get<float>());
 
+}
+
+void UEquipmentList::GetEquippedItems(TArray<AActor*>& OutEquippedItems) const
+{
+
+
+}
+
+void UEquipmentList::EquipItem(int32 IndexValue)
+{
+	// Cooldown between switching items so you cannot spam it.
+	float CurrentTime = GetWorld()->GetTimeSeconds();
+
+	if (CurrentTime - LastSwapCooldownTime < SwapCooldown)
+	{
+		return;
+	}
+
+	LastSwapCooldownTime = CurrentTime;
+
+	UE_LOG(LogTemp, Warning, TEXT("EquipItem called with index: %d"), IndexValue);
+
+	if (!EquipmentItems.IsValidIndex(IndexValue)) 
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Invalid Equipment Array Index %d"), IndexValue)
+		return;
+	}
+
+	for (int32 i = 0; i < EquipmentItems.Num(); i++)
+	{
+		AActor* ActiveItem = EquipmentItems[i];
+
+		if (!ActiveItem) 
+		{
+			continue;
+		}
+
+		const bool bShouldItemBeVisible = (i == IndexValue);
+
+		ActiveItem->SetActorHiddenInGame(bShouldItemBeVisible);
+		ActiveItem->SetActorEnableCollision(false);
+		ActiveItem->SetActorTickEnabled(bShouldItemBeVisible);
+	}
 }
 
 void UEquipmentList::AddEquipmentItem(TSubclassOf<AActor> ItemClass)
@@ -121,31 +163,6 @@ void UEquipmentList::AddEquipmentItem(TSubclassOf<AActor> ItemClass)
 	//		return;
 	//	}
 	//}
-}
-
-void UEquipmentList::GetEquippedItems(TArray<AActor*>& OutEquippedItems) const
-{
-
-
-}
-
-void UEquipmentList::EquipItem(int32 IndexValue)
-{
-	UE_LOG(LogTemp, Warning, TEXT("EquipItem called with index: %d"), IndexValue);
-
-
-	for(auto& Item : EquipmentItems)
-	{
-	/*	if (Item)
-		{
-			Item->SetActorHiddenInGame(false);
-			Item->SetActorEnableCollision(true);
-			Item->SetActorTickEnabled(true);
-		}
-
-		UE_LOG(LogTemp, Warning, TEXT("Showing item: %s"), *GetNameSafe(Item)); */
-	}
-
 }
 
 // Called every frame

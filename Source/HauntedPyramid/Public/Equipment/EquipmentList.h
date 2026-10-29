@@ -41,20 +41,21 @@ protected:
 	void HandleEquipAction(const FInputActionValue& Value);
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Equipment")
-	TArray<TSubclassOf<AActor>> EquipmentToSpawnClass;
+	TArray<TSubclassOf<AActor>> EquipmentClasses;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Equipment")
-	TArray<TSubclassOf<AActor>> EquipmentItems;
+	UPROPERTY()
+	TArray<AActor*> EquipmentItems;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* EquipAction;
 
+	UPROPERTY(EditAnywhere, Category = "Cooldown")
+	float SwapCooldown = 0.5f; // 0.5 seconds until the player can swap again.
+
+
 private: 
 
-
-	int32 Index = INDEX_NONE;
-	int EquipmentAmount = 0;
-
+	float LastSwapCooldownTime = -9999.f;
 
 public:	
 	// Called every frame

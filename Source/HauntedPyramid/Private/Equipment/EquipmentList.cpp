@@ -144,6 +144,14 @@ void UEquipmentList::EquipItem(int32 IndexValue)
 
 		const bool bShouldItemBeVisible = (i == IndexValue);
 
+		if (bShouldItemBeVisible)
+		{
+			if (ActiveItem->GetClass()->ImplementsInterface(UEquipmentAnimationInterface::StaticClass()))
+			{
+
+				IEquipmentAnimationInterface::Execute_PlayEquipAnimation(ActiveItem);
+			}
+		}
 		ActiveItem->SetActorHiddenInGame(bShouldItemBeVisible);
 		ActiveItem->SetActorEnableCollision(false);
 		ActiveItem->SetActorTickEnabled(bShouldItemBeVisible);

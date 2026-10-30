@@ -93,4 +93,25 @@ void AFlashlight::Tick(float DeltaTime)
 
 }
 
+// Not used for anything but needed to avoid unresolved external symbols linker error
+void AFlashlight::PlayEquipmentAnimationImplement()
+{
+
+}
+
+void AFlashlight::PlayUnEquipAnimationImplement()
+{
+
+}
+
+void AFlashlight::PlayUseAnimationInmplement()
+{
+
+}
+
+void AFlashlight::PlayStopUsingAnimationImplement()
+{
+
+}
+
 

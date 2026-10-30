@@ -5,7 +5,10 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "InputActionValue.h"
+
 #include "Debug/DebugLogManager.h"
+#include "EquipmentAnimationInterface.h"
+
 #include "EquipmentList.generated.h"
 
 class UInputAction;

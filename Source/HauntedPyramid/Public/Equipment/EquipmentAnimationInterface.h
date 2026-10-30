@@ -33,6 +33,6 @@ public:
 	void PlayUseAnimation();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "Animation")
-	void PlayUnUseEquipAnimation();
+	void PlayStopUsingEquipAnimation();
 
 };

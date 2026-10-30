@@ -39,6 +39,11 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	virtual void PlayEquipmentAnimationImplement(); 
+	virtual void PlayUnEquipAnimationImplement();
+	virtual void PlayUseAnimationImmplement();
+	virtual void PlayStopUsingAnimationImplement();
+
 private:
 
 	UPROPERTY(EditAnywhere, Category = "Trace")
@@ -47,8 +52,5 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Brush")
 	bool bIsBrushing = false; // Whether the brush is currently being used
 
-	virtual void PlayEquipmentAnimationImplement();
-	virtual void PlayUnEquipAnimationImplement();
-	virtual void PlayUseAnimationInmplement();
-	virtual void PlayUnUseAnimationImplement();
+
 };

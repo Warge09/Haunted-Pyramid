@@ -76,6 +76,6 @@ public:
 	virtual void PlayEquipmentAnimationImplement();
 	virtual void PlayUnEquipAnimationImplement();
 	virtual void PlayUseAnimationInmplement();
-	virtual void PlayUnUseAnimationImplement();
+	virtual void PlayStopUsingAnimationImplement();
 
 };

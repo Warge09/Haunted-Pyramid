@@ -71,3 +71,25 @@ void ABrushEquipment::Tick(float DeltaTime)
 
 }
 
+// Not used for anything but needed to avoid unresolved external symbols linker error
+void ABrushEquipment::PlayEquipmentAnimationImplement()
+{
+
+}
+
+void ABrushEquipment::PlayUnEquipAnimationImplement()
+{
+
+}
+
+void ABrushEquipment::PlayUseAnimationImmplement()
+{
+
+}
+
+void ABrushEquipment::PlayStopUsingAnimationImplement()
+{
+
+}
+
+

@@ -46,6 +46,9 @@ public:
 	float FlickerDuration = 5.0f; // The flicker will last for x amount of seconds 
 
 
+	UFUNCTION(Category = "Flashlight")
+	void FlashlightStateCheck();
+
 	UFUNCTION(BlueprintCallable, Category = "Flashlight")
 	void ToggleFlashlight();
 
@@ -58,6 +61,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Flashlight")
 	void RandomFlicker();
 
+	UFUNCTION(BlueprintCallable, Category = "Equipment")
+	void SetupInputBindings(UEnhancedInputComponent* EnhancedInputComponent, class UInputAction* InputAction);
+
 	bool bIsOn = false;
 	bool bIsFlickering = false;
 
@@ -68,6 +74,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
 	USoundBase* FlashlightSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* FlashToggleAction;
 
 public:
 	// Called every frame

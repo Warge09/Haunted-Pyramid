@@ -2,6 +2,7 @@
 
 
 #include "Player/PlayerCharacter.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -10,6 +11,7 @@ APlayerCharacter::APlayerCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	PlayerFearComponent = CreateDefaultSubobject<UPlayerFearComponent>(TEXT("PlayerFearComponent"));
+
 	EquipmentListComponent = CreateDefaultSubobject<UEquipmentList>(TEXT("EquipmentListComponent"));
 
 	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
@@ -22,7 +24,6 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
 
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &APlayerCharacter::OnOverlapBegin);
 	GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this, &APlayerCharacter::OnOverlapEnd);
@@ -165,37 +166,10 @@ void APlayerCharacter::StopJumping()
 	ACharacter::StopJumping();
 }
 
-void APlayerCharacter::InitializeFlashlight(AFlashlight* SpawnedFlashlight)
-{
-	if (IsValid(SpawnedFlashlight))
-	{
-		FlashlightComponent = SpawnedFlashlight;
-		UE_LOG(LogTemp, Warning, TEXT("Flashlight initialized."));
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Flashlight is not valid."));
-	}
-}
-
-void APlayerCharacter::CallFlashlightMethod()
+void APlayerCharacter::OnEquipmentSpawned(AActor* Item)
 {
 
-	if (IsValid(FlashlightComponent))
-	{
-		if (!FlashlightComponent->bIsOn)
-		{
-			FlashlightComponent->ToggleFlashlight();
-		}
-		else
-		{
-			FlashlightComponent->ToggleFlashlightOff();
-		}
-	}
-	else 
-	{
-		UE_LOG(LogTemp, Warning, TEXT("FlashlightComponent is not valid within CallFlashlight Function."));
-	}
+
 }
 
 // Called every frame
@@ -222,17 +196,21 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &APlayerCharacter::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &APlayerCharacter::StopJumping);
 
-		// Flashlight Inputs
-		EnhancedInputComponent->BindAction(FlashlightToggleAction, ETriggerEvent::Triggered, this, &APlayerCharacter::CallFlashlightMethod);
-		
+
 		if (EquipmentListComponent)
 		{
 			EquipmentListComponent->SetupInputBindings(EnhancedInputComponent, EquipAction);
 		}
-		else
+
+		if (FlashlightComponent)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("EquipmentListComponent is not valid within SetupPlayerInputComponent Function."));
+			FlashlightComponent->SetupInputBindings(EnhancedInputComponent, FlashlightToggleAction);
 		}
+		else 
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Flashlight Component is not valid."));
+		}
+
 	}
 }
 

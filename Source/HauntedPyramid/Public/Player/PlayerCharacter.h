@@ -100,11 +100,8 @@ public:
 	void Jump();
 	void StopJumping();
 
-	UFUNCTION(BlueprintCallable, Category = "Flashlight")
-	void InitializeFlashlight(AFlashlight* SpawnedFlashlight);
-
-	UFUNCTION(BlueprintCallable, Category = "Flashlight")
-	void CallFlashlightMethod();
+	UFUNCTION()
+	void OnEquipmentSpawned(AActor* Item);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player")
 	float Health = 100.0f;

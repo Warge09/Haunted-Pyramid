@@ -49,13 +49,18 @@ struct FInventoryItem
 };
 
 USTRUCT(BlueprintType)
-struct FItemReferenceMap
+struct FItemEntries
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inventory Item")
-	TMap<EItemType, FInventoryItem> ItemMap;
+	UPROPERTY(EditAnywhere)
+	EItemType ItemType;
+
+	UPROPERTY(EditAnywhere)
+	FInventoryItem InventoryItem;
+
 };
+
 
 UCLASS()
 class HAUNTEDPYRAMID_API UInventoryData : public UDataAsset
@@ -65,4 +70,8 @@ class HAUNTEDPYRAMID_API UInventoryData : public UDataAsset
 public:
 	
 	UInventoryData();
+
+	UPROPERTY(EditAnywhere)
+	TArray<FItemEntries> ItemEntriesArray;
+
 };

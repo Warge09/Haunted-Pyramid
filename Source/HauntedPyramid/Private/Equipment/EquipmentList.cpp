@@ -70,6 +70,7 @@ void UEquipmentList::BeginPlay()
 
 		EquipmentItems.Add(SpawnedItem);
 
+
 	}
 }
 

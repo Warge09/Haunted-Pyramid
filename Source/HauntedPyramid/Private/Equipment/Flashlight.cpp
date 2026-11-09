@@ -2,6 +2,8 @@
 
 
 #include "Equipment/Flashlight.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -23,8 +25,52 @@ AFlashlight::AFlashlight()
 
 }
 
+// Called when the game starts or when spawned
+void AFlashlight::BeginPlay()
+{
+	Super::BeginPlay();
+
+}
+
+
+void AFlashlight::SetupInputBindings(UEnhancedInputComponent* EnhancedInputComponent, class UInputAction* InputAction)
+{
+	if (!EnhancedInputComponent || !InputAction) return;
+
+	UE_LOG(LogTemp, Warning, TEXT("SetupInputBindings called with EnhancedInputComponent: %s and InputAction: %s"), *GetNameSafe(EnhancedInputComponent), *GetNameSafe(InputAction));
+
+	if (UEnhancedInputComponent* EnhancedInputComp = Cast<UEnhancedInputComponent>(EnhancedInputComponent))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("EnhancedInputComponent is valid."));
+
+		if (InputAction)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("InputAction is valid. Binding action..."));
+			EnhancedInputComponent->BindAction(InputAction, ETriggerEvent::Triggered, this, &AFlashlight::FlashlightStateCheck);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("InputAction is null."));
+		}
+	}
+
+}
+
+void AFlashlight::FlashlightStateCheck()
+{
+	if (bIsOn)
+	{
+		ToggleFlashlight();
+	}
+	else
+	{
+		ToggleFlashlightOff();
+	}
+}
+
 void AFlashlight::ToggleFlashlight()
 {
+
 	bIsOn = true;
 	SpotLightComponent->SetVisibility(bIsOn);	
 
@@ -79,12 +125,6 @@ void AFlashlight::RandomFlicker()
 	*/
 }
 
-// Called when the game starts or when spawned
-void AFlashlight::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
 
 // Called every frame
 void AFlashlight::Tick(float DeltaTime)

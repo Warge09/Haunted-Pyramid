@@ -8,10 +8,10 @@
 
 #include "Debug/DebugLogManager.h"
 #include "EquipmentAnimationInterface.h"
-
 #include "EquipmentList.generated.h"
 
 class UInputAction;
+class APlayerCharacter;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class HAUNTEDPYRAMID_API UEquipmentList : public UActorComponent
@@ -37,6 +37,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Equipment")
 	void SetupInputBindings(UEnhancedInputComponent* EnhancedInputComponent, class UInputAction* InputAction);
 
+
+	UPROPERTY()
+	TArray<AActor*> EquipmentItems;
+
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -45,9 +50,6 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Equipment")
 	TArray<TSubclassOf<AActor>> EquipmentClasses;
-
-	UPROPERTY()
-	TArray<AActor*> EquipmentItems;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
 	UInputAction* EquipAction;
